@@ -1,0 +1,50 @@
+﻿<div class="page">
+    <div class="sidebar">
+        <div class="top-row ps-3 navbar navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="">WpfBlazorHybrid</a>
+            </div>
+        </div>
+
+        <div>
+            <nav class="flex-column">
+                <div class="px-3 mt-3">
+                    <button class="btn btn-primary" @onclick="@(() => ChangePage("Click"))">
+                        Click Page
+                    </button>
+                </div>
+                <div class="px-3 mt-2">
+                    <button class="btn btn-primary" @onclick="@(() => ChangePage("Counter"))">
+                        Counter Page
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+    </div>
+
+    <main>
+        <article class="content px-4">
+            @switch (CurrentPage)
+            {
+                case "Click":
+                    <Click />
+                    break;
+
+                case "Counter":
+                    <Counter />
+                    break;
+            }
+        </article>
+    </main>
+</div>
+
+
+@code {
+    public string CurrentPage { get; set; } = "Click";
+
+    public void ChangePage(string pageName)
+    {
+        CurrentPage = pageName;
+    }
+}

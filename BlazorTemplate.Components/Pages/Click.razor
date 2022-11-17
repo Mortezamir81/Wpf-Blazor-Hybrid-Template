@@ -1,0 +1,22 @@
+﻿@inject ClickViewModel ClickViewModel
+@implements IDisposable
+
+<h3>@ClickViewModel.ClickName</h3>
+<button class="btn btn-primary" @onclick="Change">Blazor Click!</button>
+
+@code {
+    protected override void OnInitialized()
+    {
+        ClickViewModel.AddStateChangeListener(() => StateHasChanged());
+    }
+
+    public void Dispose()
+    {
+        ClickViewModel.RemoveStateChangeListener(() => StateHasChanged());
+    }
+
+    public void Change()
+    {
+        ClickViewModel.SetClickName("Blazor Clicked!");
+    }
+}
