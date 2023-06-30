@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfBlazorHybridTmplate", "WpfBlazorHybridTmplate\WpfBlazorHybridTmplate.csproj", "{ECBFD860-B6D0-4089-B296-E78BA26B7E74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfBlazorHybridTemplate", "src\WpfBlazorHybridTemplate\WpfBlazorHybridTemplate.csproj", "{ECBFD860-B6D0-4089-B296-E78BA26B7E74}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTemplate.Components", "BlazorTemplate.Components\BlazorTemplate.Components.csproj", "{D4111423-C51F-4DFE-8F19-A6B864DA41C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTemplate.Components", "src\BlazorTemplate.Components\BlazorTemplate.Components.csproj", "{D4111423-C51F-4DFE-8F19-A6B864DA41C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTemplate.Shared", "BlazorTemplate.Shared\BlazorTemplate.Shared.csproj", "{3DD403FE-CC64-4EFE-87D4-21A5114A2E54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTemplate.Shared", "src\BlazorTemplate.Shared\BlazorTemplate.Shared.csproj", "{3DD403FE-CC64-4EFE-87D4-21A5114A2E54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1D51C8BC-0975-40D8-B330-66B285C21756}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ECBFD860-B6D0-4089-B296-E78BA26B7E74} = {1D51C8BC-0975-40D8-B330-66B285C21756}
+		{D4111423-C51F-4DFE-8F19-A6B864DA41C7} = {1D51C8BC-0975-40D8-B330-66B285C21756}
+		{3DD403FE-CC64-4EFE-87D4-21A5114A2E54} = {1D51C8BC-0975-40D8-B330-66B285C21756}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {728C6DCD-1E6C-456A-8537-CA4F1A1921D7}
