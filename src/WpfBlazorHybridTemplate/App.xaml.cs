@@ -23,6 +23,7 @@ public partial class App : Application
 	private void ConfigureServices(ServiceCollection services)
 	{
 		services.AddWpfBlazorWebView();
+		services.AddBlazorWebViewDeveloperTools();
 		services.AddSingleton<MainWindow>();
 		services.AddSingleton<CounterViewModel>();
 		services.AddSingleton<ClickViewModel>();

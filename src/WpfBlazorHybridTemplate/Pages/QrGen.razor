@@ -1,0 +1,147 @@
+﻿@using System.Text.Json
+@using System.Windows
+<div class="w-100 h-100 d-flex justify-content-center align-items-center flex-column">
+    <form>
+        <div class="form-group">
+            <label for="exampleInputIMEI1">IMEI:</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" style="border-top-right-radius: 0;border-bottom-right-radius: 0;">8691700</span>
+                </div>
+                <input @oninput="@((e) => ChangeText(e, "Imei"))" type="text" maxlength="8" class="form-control" id="exampleInputIMEI1" aria-describedby="IMEIHelp" placeholder="Enter IMEI">
+            </div>
+        </div>
+        <div class="form-group mt-2">
+            <label for="exampleInputPhoneNumber1">PhoneNumber:</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" style="border-top-right-radius: 0;border-bottom-right-radius: 0;">+98</span>
+                </div>
+                <input @oninput="@((e) => ChangeText(e, "PhoneNumber"))" type="text" maxlength="10" class="form-control" id="exampleInputPhoneNumber1" placeholder="Phone Number">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center mt-3">
+            <button type="button" class="btn btn-primary" @onclick="Generate">Generate</button>
+        </div>
+    </form>
+
+    @if (!string.IsNullOrWhiteSpace(Result))
+    {
+        <div class="w-100 h-100 d-flex justify-content-center align-items-start flex-column mt-3">
+            <span>Result: </span>
+
+            <div class="d-flex justify-content-center align-items-center gap-2">
+                <div class="p-2" style="background-color: #e4e2e2;border-radius: 15px;">
+                    <span>@Result</span>
+                </div>
+
+                <button type="button" class="btn btn-primary" @onclick="Copy">
+                    @if (Copied)
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+                            <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z" />
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708" />
+                        </svg>
+                    }
+                    else
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
+                        </svg>
+                    }
+
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    public string? PhoneNumber { get; set; }
+    public string? Imei { get; set; }
+    public string? Result { get; set; }
+    public bool Copied { get; set; }
+
+    protected override void OnInitialized()
+    {
+    }
+
+    private void ChangeText(ChangeEventArgs args, string type)
+    {
+        Result = null;
+        StateHasChanged();
+
+        if (type == "Imei")
+        {
+            Imei = args.Value?.ToString();
+            StateHasChanged();
+            return;
+        }
+
+        if (type == "PhoneNumber")
+        {
+            PhoneNumber = args.Value?.ToString();
+            StateHasChanged();
+            return;
+        }
+    }
+
+    private async Task Generate()
+    {
+        if (string.IsNullOrWhiteSpace(Imei))
+        {
+            return;
+        }
+
+        if (Imei.Length != 8)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(PhoneNumber))
+        {
+            return;
+        }
+
+        if (PhoneNumber.Length != 10)
+        {
+            return;
+        }
+
+        var json = new QrCodeNewUserData
+            {
+                PhoneNumber = $"0{PhoneNumber}",
+                Imei = $"8691700{Imei}",
+                IsAdmin = true,
+            };
+
+        var value = JsonSerializer.Serialize(json);
+
+        Result = value;
+
+        StateHasChanged();
+    }
+
+    private async Task Copy()
+    {
+        Copied = true;
+        StateHasChanged();
+
+        Clipboard.SetText(Result);
+
+        await Task.Delay(2000);
+
+        Copied = false;
+        StateHasChanged();
+    }
+
+    public class QrCodeNewUserData
+    {
+        public string? PhoneNumber { get; set; }
+
+        public string? Imei { get; set; }
+
+        public bool IsAdmin { get; set; }
+    }
+}
