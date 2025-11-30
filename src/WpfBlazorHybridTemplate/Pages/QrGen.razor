@@ -1,14 +1,12 @@
 ﻿@using System.Text.Json
 @using System.Windows
+
 <div class="w-100 h-100 d-flex justify-content-center align-items-center flex-column">
     <form>
         <div class="form-group">
             <label for="exampleInputIMEI1">IMEI:</label>
             <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" style="border-top-right-radius: 0;border-bottom-right-radius: 0;">8691700</span>
-                </div>
-                <input @oninput="@((e) => ChangeText(e, "Imei"))" type="text" maxlength="8" class="form-control" id="exampleInputIMEI1" aria-describedby="IMEIHelp" placeholder="Enter IMEI">
+                <input @oninput="@((e) => ChangeText(e, "Imei"))" type="text" maxlength="15" class="form-control" id="exampleInputIMEI1" aria-describedby="IMEIHelp" placeholder="Enter IMEI">
             </div>
         </div>
         <div class="form-group mt-2">
@@ -18,6 +16,36 @@
                     <span class="input-group-text" style="border-top-right-radius: 0;border-bottom-right-radius: 0;">+98</span>
                 </div>
                 <input @oninput="@((e) => ChangeText(e, "PhoneNumber"))" type="text" maxlength="10" class="form-control" id="exampleInputPhoneNumber1" placeholder="Phone Number">
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <label>Vehicle Type:</label>
+            <div class="d-flex gap-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gpsType" id="typeCar"
+                           checked="@(SelectedGpsType == GpsType.Car)"
+                           @onchange="@(() => SelectedGpsType = GpsType.Car)">
+                    <label class="form-check-label" for="typeCar">
+                        سواری
+                    </label>
+                </div>
+                <div class="form-check ms-3">
+                    <input class="form-check-input" type="radio" name="gpsType" id="typeMotor"
+                           checked="@(SelectedGpsType == GpsType.Motorcycle)"
+                           @onchange="@(() => SelectedGpsType = GpsType.Motorcycle)">
+                    <label class="form-check-label" for="typeMotor">
+                        موتوری
+                    </label>
+                </div>
+                <div class="form-check ms-3">
+                    <input class="form-check-input" type="radio" name="gpsType" id="typeUnknown"
+                           checked="@(SelectedGpsType == null)"
+                           @onchange="@(() => SelectedGpsType = null)">
+                    <label class="form-check-label" for="typeUnknown">
+                        مشخص نیست
+                    </label>
+                </div>
             </div>
         </div>
 
@@ -50,7 +78,6 @@
                             <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
                         </svg>
                     }
-
                 </button>
             </div>
         </div>
@@ -62,6 +89,9 @@
     public string? Imei { get; set; }
     public string? Result { get; set; }
     public bool Copied { get; set; }
+
+    // Default to Car (0)
+    public GpsType? SelectedGpsType { get; set; } = GpsType.Motorcycle;
 
     protected override void OnInitialized()
     {
@@ -94,7 +124,7 @@
             return;
         }
 
-        if (Imei.Length != 8)
+        if (Imei.Length != 15)
         {
             return;
         }
@@ -111,9 +141,10 @@
 
         var json = new QrCodeNewUserData
             {
-                PhoneNumber = $"0{PhoneNumber}",
-                Imei = $"8691700{Imei}",
+                PhoneNumber = $"{PhoneNumber}",
+                Imei = $"{Imei}",
                 IsAdmin = true,
+                GpsType = SelectedGpsType // Mapping the enum selection
             };
 
         var value = JsonSerializer.Serialize(json);
@@ -143,5 +174,13 @@
         public string? Imei { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public GpsType? GpsType { get; set; }
+    }
+
+    public enum GpsType
+    {
+        Motorcycle = 0,
+        Car = 1
     }
 }

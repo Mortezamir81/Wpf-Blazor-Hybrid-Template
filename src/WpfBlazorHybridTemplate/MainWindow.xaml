@@ -7,7 +7,7 @@
         xmlns:blazorComponents="clr-namespace:WpfBlazorHybridTemplate.BlazorComponents"
         xmlns:blazor="http://schemas.microsoft.com/winfx/2006/xaml/presentation/blazor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="930">
+        Title="MainWindow" Height="450" Width="1050">
     <Grid>
         <blazor:BlazorWebView Name="BlazorWebView" HostPage="wwwroot\index.html" Services="{DynamicResource services}" Grid.Row="1">
             <blazor:BlazorWebView.RootComponents>
